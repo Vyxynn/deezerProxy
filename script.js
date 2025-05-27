@@ -1,4 +1,3 @@
-// CHANGE THIS to your deployed Vercel project URL:
 const proxyBase = "https://deezer-proxy-psi.vercel.app/api/deezer";
 
 async function fetchFromProxy(deezerUrl) {
@@ -22,7 +21,8 @@ async function getArtistImage(artistName) {
 
 async function getTrackAlbumCover(trackTitle, artistName) {
   if (!trackTitle || !artistName) return null;
-  const url = `https://api.deezer.com/search?q=track:"${encodeURIComponent(trackTitle)}" artist:"${encodeURIComponent(artistName)}"`;
+  const query = `${trackTitle} ${artistName}`;
+  const url = `https://api.deezer.com/search?q=${encodeURIComponent(query)}`;
   const data = await fetchFromProxy(url);
   if (data.data && data.data.length > 0) {
     return data.data[0].album.cover_medium;
