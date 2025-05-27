@@ -1,5 +1,5 @@
 // CHANGE THIS to your deployed Vercel project URL:
-const proxyBase = "https://deezer-proxy-psi.vercel.app/";
+const proxyBase = "https://deezer-proxy-psi.vercel.app/api/deezer";
 
 async function fetchFromProxy(deezerUrl) {
   const encodedUrl = encodeURIComponent(deezerUrl);
