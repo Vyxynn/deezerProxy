@@ -3,25 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Deezer Proxy Demo</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Deezer Proxy Frontend</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #121212;
+      color: white;
+      max-width: 600px;
+      margin: auto;
+    }
+    input, button {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border-radius: 5px;
+      border: none;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #1db954;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #17a34a;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    .result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #222;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Deezer Proxy Demo</h1>
+
+  <h1>Deezer Proxy Image Fetcher</h1>
 
   <section>
-    <h2>Search Artist Image</h2>
-    <input type="text" id="artist-input" placeholder="Enter artist name" />
-    <button id="artist-search-btn">Search Artist</button>
-    <div id="artist-result"></div>
+    <h2>Artist Image</h2>
+    <input type="text" id="artistName" placeholder="Artist name (e.g. Stela Cole)" />
+    <button id="fetchArtist">Get Artist Image</button>
+    <div id="artistResult" class="result"></div>
   </section>
 
   <section>
-    <h2>Search Track Info</h2>
-    <input type="text" id="track-title" placeholder="Enter track title" />
-    <input type="text" id="track-artist" placeholder="Enter artist name" />
-    <button id="track-search-btn">Search Track</button>
-    <div id="track-result"></div>
+    <h2>Track Album Cover</h2>
+    <input type="text" id="trackTitle" placeholder="Track title (e.g. Welcome to Eden)" />
+    <input type="text" id="trackArtist" placeholder="Artist name (e.g. Ashley Sienna)" />
+    <button id="fetchTrack">Get Track Album Cover</button>
+    <div id="trackResult" class="result"></div>
   </section>
 
   <script src="script.js"></script>
