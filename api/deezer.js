@@ -1,28 +1,31 @@
-const fetch = require('node-fetch');
+const https = require('https');
 
 module.exports = async function handler(req, res) {
   const { url } = req.query;
 
   if (!url || !url.startsWith('https://api.deezer.com/')) {
-    console.error("Bad request, invalid or missing url param:", url);
     return res.status(400).json({ error: "Invalid or missing 'url' parameter" });
   }
 
-  try {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      console.error(`Deezer API returned status ${response.status} for URL: ${url}`);
-      return res.status(response.status).json({ error: 'Deezer API error', status: response.status });
-    }
-
-    const data = await response.json();
+  https.get(url, (response) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'application/json');
-    return res.status(200).json(data);
 
-  } catch (error) {
-    console.error('Proxy fetch failed with error:', error);
-    return res.status(500).json({ error: 'Proxy fetch failed', details: error.message });
-  }
+    let data = '';
+    response.on('data', chunk => {
+      data += chunk;
+    });
+    response.on('end', () => {
+      try {
+        const json = JSON.parse(data);
+        res.status(200).json(json);
+      } catch (e) {
+        console.error('JSON parse error:', e);
+        res.status(500).json({ error: 'Failed to parse JSON from Deezer' });
+      }
+    });
+  }).on('error', (e) => {
+    console.error('HTTPS proxy error:', e);
+    res.status(500).json({ error: 'Proxy fetch failed', details: e.message });
+  });
 };
