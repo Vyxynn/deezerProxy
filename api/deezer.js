@@ -1,29 +1,25 @@
-import fetch from "node-fetch";
+const fetch = require('node-fetch');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const { url } = req.query;
 
-  // Basic validation: only allow Deezer API URLs for safety
-  if (!url || !url.startsWith("https://api.deezer.com/")) {
-    res.status(400).json({ error: "Invalid or missing 'url' parameter" });
-    return;
+  if (!url || !url.startsWith('https://api.deezer.com/')) {
+    return res.status(400).json({ error: "Invalid or missing 'url' parameter" });
   }
 
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      res.status(response.status).json({ error: "Deezer API error" });
-      return;
+      return res.status(response.status).json({ error: 'Deezer API error' });
     }
+
     const data = await response.json();
 
-    // Add CORS headers to allow any site to fetch from this proxy
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET");
-    res.setHeader("Content-Type", "application/json");
-
-    res.status(200).json(data);
-  } catch (err) {
-    res.status(500).json({ error: "Fetch failed", details: err.message });
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Content-Type', 'application/json');
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error('Proxy fetch failed:', error);
+    return res.status(500).json({ error: 'Proxy fetch failed', details: error.message });
   }
-}
+};
